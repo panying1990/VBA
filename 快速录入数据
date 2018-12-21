@@ -1,0 +1,25 @@
+操作对象：Worksheets
+操作事件：Worksheet_Change
+操作过程代码：
+Private Sub Worksheet_Change(ByVal Target As Range)
+    If Target.Count > 1 Then Exit Sub  '同时更改多个单元格结束执行程序
+    '如果更改的单元格不是B列第二行一下的单元格时退出程序
+    If Application.Intersect(Target, Range("B2:B1048576")) Is Nothing Then Exit Sub
+    If Target.Value = "" Then Exit Sub '输入为空时候退出执行程序
+    Dim i As Integer '定义变量i,用于记录商品在参照表中的第几行
+    On Error GoTo a '如果Match函数查找出错，则跳转到标签a所在行继续执行程序
+    '借助工作表行数确定输入的商品名称是参照表的第几行
+    i = Application.WorksheetFunction.Match(UCase(Target.Value), Range("H:H"), False)
+    Application.EnableEvents = False   '禁用事件，防止将字幕改为商品名时，再次执行程序
+     With Target
+        .Value = Cells(i, "I").Value    '自动输入商品名称
+        .Offset(0, -1).Value = Now      '自动输入销售日期与时间
+        .Offset(0, 1).Value = Cells(i, "J").Value     '自动输入商品代码
+        .Offset(0, 2).Value = Cells(i, "K").Value     '自动写入商品单价
+        .Offset(0, 3).Select    '选中销售数量列，等待输入销售数量
+     End With
+     Application.EnableEvents = True   '重新启用事件
+     Exit Sub                '结束执行程序
+a: MsgBox "没有输入内容匹配的商品"
+   Target.Value = ""
+End Sub
