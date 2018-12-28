@@ -5,7 +5,7 @@ End Sub
 
 Private Sub CmdOk_Click()
     Application.ScreenUpdating = False     '关闭屏幕更新
-     Static i As Intger         '声明一个静态变量，用来记录用户名或密码的输错次数
+     Static i As Integer         '声明一个静态变量，用来记录用户名或密码的输错次数
      '判断用户名和密码是否输入正确
      If CStr(TextBox1.Value) = Right(Names("UserName").RefersTo, Len(Names("UserName").RefersTo) - 1) And _
              CStr(TextBox2.Value) = Right(Names("UserWord").RefersTo, Len(Names("UserWord").RefersTo) - 1) Then
@@ -71,7 +71,7 @@ Private Sub UserSet_Click()
     new2 = InputBox("请再次输入新用户名：", "提示")
     '判断两次输入的用户名是都相同
     If new1 = new2 Then
-     Names("UserNames").RefersTo = "=" & new1  '将用户名保存到名称里
+     Names("UserName").RefersTo = "=" & new1  '将用户名保存到名称里
      ThisWorkbook.Save
      MsgBox "用户名修改完毕，下次登录请使用新用户名", vbInformation, "提示"
     Else
