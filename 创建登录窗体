@@ -28,6 +28,32 @@ Private Sub CmdOk_Click()
         
 End Sub
 
+Private Sub PasswordSet_Click()
+ Dim old As String, new1 As String, new2 As String
+  old = InputBox("请输入原密码：", "提示")
+   '判断输入的原密码是否正确
+    If old <> Right(Names("UserWord").RefersTo, Len(Names("UserWord").RefersTo) - 1) Then
+       MsgBox "密码输入错误，不能修改！", vbCritical, "错误"
+       Exit Sub
+    End If
+    new1 = InputBox("请输入新密码：", "提示")
+    '判断输入的密码是否为空
+    If new1 = "" Then
+     MsgBox "新密码不能为空：", vbCritical, "错误"
+     Exit Sub
+    End If
+    new2 = InputBox("请再次输入新密码：", "提示")
+    '判断两次输入的密码是都相同
+    If new1 = new2 Then
+     Names("UserWord").RefersTo = "=" & new1  '将密码保存到名称里
+     ThisWorkbook.Save
+     MsgBox "密码修改完毕，下次登录请使用新用户名", vbInformation, "提示"
+    Else
+     MsgBox "两次输入的密码不一致，修改没有完成", vbCritical, "错误"
+    End If
+ 
+End Sub
+
 Private Sub UserSet_Click()
     Dim old As String, new1 As String, new2 As String
     old = InputBox("请输入原用户名：", "提示")
