@@ -1,9 +1,14 @@
+Private Sub CmdCancel_Click()
+    Unload Me
+    ThisWorkbook.Close savechanges = False '关闭当前工作簿，并不保存修改
+End Sub
+-----------------------------------------------------------
 Private Sub CmdOk_Click()
     Application.ScreenUpdating = False     '关闭屏幕更新
      Static i As Intger         '声明一个静态变量，用来记录用户名或密码的输错次数
      '判断用户名和密码是否输入正确
-     If CStr(User.Value) = Right(Names("UserName").RefersTo, Len(Names("UserName").RefersTo) - 1) And _
-             CStr(Password.Value) = Right(Names("UserWord").RefersTo, Len(Names("UserWord").RefersTo) - 1) Then
+     If CStr(TextBox1.Value) = Right(Names("UserName").RefersTo, Len(Names("UserName").RefersTo) - 1) And _
+             CStr(TextBox2.Value) = Right(Names("UserWord").RefersTo, Len(Names("UserWord").RefersTo) - 1) Then
              Unload Me    '如果输入正确。关闭登录窗体
              Application.Visible = True '显示Excel界面
      Else
@@ -13,8 +18,8 @@ Private Sub CmdOk_Click()
             ThisWorkbook.Close savechanges:=False  '关闭当前工作簿，不保存更改
         Else
             MsgBox "输入错误，您还有" & (3 - i) & "输入机会", vbExclamation, "提示"
-            User.Value = ""
-            Password.Value = "" '清楚文本框内容
+            TextBox1.Value = ""
+            TextBox2.Value = "" '清楚文本框内容
         End If
      
      End If
