@@ -2,7 +2,7 @@ Private Sub CmdCancel_Click()
     Unload Me
     ThisWorkbook.Close savechanges = False '关闭当前工作簿，并不保存修改
 End Sub
------------------------------------------------------------
+
 Private Sub CmdOk_Click()
     Application.ScreenUpdating = False     '关闭屏幕更新
      Static i As Intger         '声明一个静态变量，用来记录用户名或密码的输错次数
@@ -26,4 +26,29 @@ Private Sub CmdOk_Click()
      
     Application.ScreenUpdating = False     '开启屏幕更新
         
+End Sub
+
+Private Sub UserSet_Click()
+    Dim old As String, new1 As String, new2 As String
+    old = InputBox("请输入原用户名：", "提示")
+    '判断输入的用户用户名是否正确
+    If old <> Right(Names("UserName").RefersTo, Len(Names("UserName").RefersTo) - 1) Then
+       MsgBox "原用户名输入错误，不能修改！", vbCritical, "错误"
+       Exit Sub
+    End If
+    new1 = InputBox("请输入新用户名：", "提示")
+    '判断输入的用户名是否为空
+    If new1 = "" Then
+     MsgBox "新用户名不能为空：", vbCritical, "错误"
+     Exit Sub
+    End If
+    new2 = InputBox("请再次输入新用户名：", "提示")
+    '判断两次输入的用户名是都相同
+    If new1 = new2 Then
+     Names("UserNames").RefersTo = "=" & new1  '将用户名保存到名称里
+     ThisWorkbook.Save
+     MsgBox "用户名修改完毕，下次登录请使用新用户名", vbInformation, "提示"
+    Else
+     MsgBox "两次输入的新名称不一致，修改没有完成", vbCritical, "错误"
+    End If
 End Sub
